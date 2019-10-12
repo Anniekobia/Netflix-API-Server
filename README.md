@@ -2,7 +2,9 @@
 This is a Netflix API server containing three models: 
 
 1.Movies
-2.Categories 
+
+2.Categories
+
 3.Users 
 
 The server contains endpoints to allow a user to:
