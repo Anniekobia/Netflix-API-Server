@@ -9,11 +9,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "identification_number")
-    private String identificationNumber;
-
     @Column(name = "name")
     private String name;
+
+    @Column(name = "identification_number")
+    private String identificationNumber;
 
 
     public User(String idNumber, String name) {

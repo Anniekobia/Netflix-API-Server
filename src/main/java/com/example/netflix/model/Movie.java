@@ -1,10 +1,11 @@
 package com.example.netflix.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
 
 @Entity
 @Table(name = "movies")
@@ -13,18 +14,29 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    //@NotNull(groups = Update.class)
     private Long id;
 
     @Column(name = "name")
-    //@NotNull(groups = Create.class)
+    @NotNull
     private String name;
 
-    @ManyToMany(mappedBy = "movies")
-    private Set<Category> categories = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany
+    @JoinColumn(name = "category_id")
+    private Optional<Category> category;
 
-    public Movie(String name) {
+    @Column(name = "type")
+    private String type;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Movie(String name, Category category, String type) {
         this.name = name;
+        this.type=type;
+        this.category= Optional.ofNullable(category);
     }
 
     private Movie(){
@@ -47,12 +59,28 @@ public class Movie {
         this.name = name;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
+    public String getType() {
+        return type;
     }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Optional<Category> getCategory() {
+        return category;
+    }
+
+    public void setCategory(Optional<Category> category) {
+        this.category = category;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -60,10 +88,8 @@ public class Movie {
         return "Movie{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", categories=" + categories +
+                ", categories=" + category +
                 '}';
     }
-    public interface Create{}
 
-    public interface Update{}
 }
