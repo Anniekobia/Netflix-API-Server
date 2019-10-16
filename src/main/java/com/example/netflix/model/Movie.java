@@ -1,11 +1,11 @@
 package com.example.netflix.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "movies")
@@ -16,30 +16,33 @@ public class Movie {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    @NotNull
-    private String name;
-
-    @JsonIgnore
-    @ManyToMany
-    @JoinColumn(name = "category_id")
-    private Optional<Category> category;
+    @Column(name = "title",unique = true)
+    private String title;
 
     @Column(name = "type")
     private String type;
 
     @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "movie_category",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet<>();
+
+
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-    public Movie(String name, Category category, String type) {
-        this.name = name;
-        this.type=type;
-        this.category= Optional.ofNullable(category);
+    public Movie(String title, String type, Set<Category> categories) {
+        this.title = title;
+        this.type = type;
+        this.categories = categories;
     }
 
-    private Movie(){
+    private Movie() {
 
     }
 
@@ -51,12 +54,12 @@ public class Movie {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getType() {
@@ -67,12 +70,12 @@ public class Movie {
         this.type = type;
     }
 
-    public Optional<Category> getCategory() {
-        return category;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Optional<Category> category) {
-        this.category = category;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     public User getUser() {
@@ -82,14 +85,5 @@ public class Movie {
     public void setUser(User user) {
         this.user = user;
     }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", categories=" + category +
-                '}';
-    }
-
 }
+

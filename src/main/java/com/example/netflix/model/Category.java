@@ -1,7 +1,5 @@
 package com.example.netflix.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -13,11 +11,14 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
-    @NotNull
     private String name;
+
+    @ManyToMany
+    private Set<Movie> movies = new HashSet<>();
 
 
     public Category(String name) {
@@ -42,6 +43,5 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
-
 
 }

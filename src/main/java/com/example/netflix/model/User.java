@@ -1,24 +1,28 @@
 package com.example.netflix.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "name")
+    @NotNull(message = "Please enter your name")
     private String name;
 
-    @Column(name = "identification_number")
-    private String identificationNumber;
+    @Column(name = "identification_number",unique = true)
+    @NotNull(message = "Please enter a unique identification number")
+    private Long identificationNumber;
 
 
-    public User(String idNumber, String name) {
-        this.identificationNumber = idNumber;
+    public User(String name, Long identificationNumber) {
         this.name = name;
+        this.identificationNumber = identificationNumber;
     }
 
     private User() {
@@ -32,14 +36,6 @@ public class User {
         this.id = id;
     }
 
-    public String getIdentificationNumber() {
-        return identificationNumber;
-    }
-
-    public void setIdentificationNumber(String identificationNumber) {
-        this.identificationNumber = identificationNumber;
-    }
-
     public String getName() {
         return name;
     }
@@ -47,4 +43,13 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Long getIdentificationNumber() {
+        return identificationNumber;
+    }
+
+    public void setIdentificationNumber(Long identificationNumber) {
+        this.identificationNumber = identificationNumber;
+    }
+
 }

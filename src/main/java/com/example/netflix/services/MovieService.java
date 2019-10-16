@@ -2,18 +2,20 @@ package com.example.netflix.services;
 
 import com.example.netflix.model.Category;
 import com.example.netflix.model.Movie;
+import com.example.netflix.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public interface MovieService {
 
-    Movie suggestMovie(String name, Category categor);
+    Movie suggestMovie(String title, Set<Category> category, Long identification);
 
-    List <Movie> getMovies(Long id,String type);
-
-    Movie updateMovie(Long movie_id, String name, Long category_id, Long user_id);
-
-    void deleteMovie(Long user_id,Long movie_id);
+//    List <Movie> getMovies(Long category_id,String type);
+//
+//    Movie updateMovie(Long movie_id, String name, Long category_id, Long user_identification);
+//
+//    void deleteMovie(Long user_identification,Long movie_id);
 }
