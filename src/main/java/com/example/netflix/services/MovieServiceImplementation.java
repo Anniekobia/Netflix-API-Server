@@ -25,20 +25,17 @@ public class MovieServiceImplementation implements MovieService {
 
     @Override
     public Movie suggestMovie(String title, Set<Category> category, Long identification) {
-        String type="Suggested";
+        String type = "Suggested";
         Movie existingMovie = movieRepository.findByTitle(title);
         User user = userRepository.findByIdentificationNumber(identification);
-        if(existingMovie==null){
-            Movie movie = new Movie(title,type,category);
+        if (existingMovie == null) {
+            Movie movie = new Movie(title, type, category);
             movie.setUser(user);
             return movieRepository.save(movie);
-//            return movie;
-        }else {
+        } else {
             throw new EntityExistsException("This Movie has already been suggested");
-//            return existingMovie;
         }
     }
-
 //    @Override
 //    public List<Movie> getMovies(Long id, String type) {
 //        return movieRepository.findByCategoriesAndType(id,type);
