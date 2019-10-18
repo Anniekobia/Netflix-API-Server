@@ -28,7 +28,7 @@ public class Category {
 //    )
 //    private Set<Movie> movies = new HashSet<>();
 
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<Movie> movies = new HashSet<>();
 
