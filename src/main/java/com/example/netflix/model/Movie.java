@@ -1,15 +1,14 @@
 package com.example.netflix.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-
-@Entity
-@Table(name = "movies")
+@Entity(name = "movies")
 public class Movie {
 
     @Id
@@ -23,37 +22,24 @@ public class Movie {
     @Column(name = "type")
     private String type;
 
-
-
 //    @JsonIgnore
-//    @ManyToMany(mappedBy = "movies", fetch = FetchType.EAGER)
-//    private Set<Category> categories = new HashSet<>();
-
-    @JsonIgnore
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "category_movie",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private Set<Category> categories = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "movie_category",
+            joinColumns = { @JoinColumn(name = "movie_id") },
+            inverseJoinColumns = { @JoinColumn(name = "category_id") })
+    private Set<Category> categories = new HashSet<Category>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-
-
-    public Movie(String title,String type, Set<Category> categories) {
+    public Movie(String title, Set<Category> categories) {
         this.title = title;
-        this.type = type;
         this.categories = categories;
     }
 
-    private Movie() {
+    private Movie(){
 
     }
 
@@ -96,11 +82,4 @@ public class Movie {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public void addCategory(Category category) {
-        categories.add(category);
-        category.getMovies().add(this);
-    }
-
 }
-

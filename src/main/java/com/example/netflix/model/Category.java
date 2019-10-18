@@ -1,14 +1,14 @@
 package com.example.netflix.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "categories")
+@Entity(name = "categories")
 public class Category {
 
     @Id
@@ -19,25 +19,15 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-//    @JsonIgnore
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//    @JoinTable(
-//            name = "category_movies",
-//            joinColumns = {@JoinColumn(name = "category_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "movie_id")}
-//    )
-//    private Set<Movie> movies = new HashSet<>();
-
     @JsonIgnore
     @ManyToMany(mappedBy = "categories")
-    private Set<Movie> movies = new HashSet<>();
-
+    private Set<Movie> movies = new HashSet<Movie>();
 
     public Category(String name) {
         this.name = name;
     }
+    private Category(){
 
-    private Category() {
     }
 
     public Long getId() {
@@ -64,4 +54,13 @@ public class Category {
         this.movies = movies;
     }
 
+    public void addMovie(Movie movie) {
+        this.movies.add(movie);
+        movie.getCategories().add(this);
+    }
+
+    public void removeMovie(Movie movie) {
+        this.movies.remove(movie);
+        movie.getCategories().remove(this);
+    }
 }
