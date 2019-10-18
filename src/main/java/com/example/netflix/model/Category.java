@@ -1,5 +1,7 @@
 package com.example.netflix.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -17,7 +19,17 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany
+//    @JsonIgnore
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+//    @JoinTable(
+//            name = "category_movies",
+//            joinColumns = {@JoinColumn(name = "category_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "movie_id")}
+//    )
+//    private Set<Movie> movies = new HashSet<>();
+
+
+    @ManyToMany(mappedBy = "categories")
     private Set<Movie> movies = new HashSet<>();
 
 
@@ -42,6 +54,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<Movie> movies) {
+        this.movies = movies;
     }
 
 }

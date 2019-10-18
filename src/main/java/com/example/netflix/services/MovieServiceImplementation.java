@@ -9,6 +9,7 @@ import com.example.netflix.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -24,22 +25,28 @@ public class MovieServiceImplementation implements MovieService {
     }
 
     @Override
-    public Movie suggestMovie(String title, Set<Category> category, Long identification) {
+    public Movie suggestMovie(String title, Set<Category> categories, Long identification) {
         String type = "Suggested";
         Movie existingMovie = movieRepository.findByTitle(title);
         User user = userRepository.findByIdentificationNumber(identification);
         if (existingMovie == null) {
-            Movie movie = new Movie(title, type, category);
+            Movie movie = new Movie(title,type, categories);
+            for (Category category:categories) {
+                movie.addCategory(category);
+            }
             movie.setUser(user);
             return movieRepository.save(movie);
         } else {
             throw new EntityExistsException("This Movie has already been suggested");
         }
     }
-//    @Override
-//    public List<Movie> getMovies(Long id, String type) {
-//        return movieRepository.findByCategoriesAndType(id,type);
-//    }
+
+    @Override
+    public List<Movie> getMovies(Long category_id, String type) {
+        return movieRepository.findByCategoriesAndType(categoryRepository.findById(category_id),type);
+//        return movieRepository.findAll();
+
+    }
 
 //    @Override
 //    public Movie updateMovie(Long movie_id, String name, Long category_id, Long user_id) {

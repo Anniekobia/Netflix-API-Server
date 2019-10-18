@@ -16,11 +16,12 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-//    @GetMapping(value = "movies/{id}/")
-//    public List<Movie> findByIdAndType(@PathVariable Long id, @RequestParam(value="type") String type){
-//        return movieService.getMovies(id,type);
-//    }
-//
+    @GetMapping(value = "movies/{category_id}")
+    public List<Movie> findByCategoryIdAndType(@PathVariable Long category_id, @RequestParam(value="type") String type){
+        return movieService.getMovies(category_id,type);
+//        return movieService.getMovies(category_id,type);
+    }
+
     @PostMapping
     public Movie suggestMovie(@RequestParam Long identificationNumber,@RequestBody Movie movie){
         return movieService.suggestMovie(movie.getTitle(),movie.getCategories(),identificationNumber);

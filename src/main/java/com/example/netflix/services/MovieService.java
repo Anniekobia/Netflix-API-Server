@@ -11,9 +11,9 @@ import java.util.Set;
 @Service
 public interface MovieService {
 
-    Movie suggestMovie(String title, Set<Category> category, Long identification);
+    Movie suggestMovie(String title, Set<Category> categories, Long identification);
 
-//    List <Movie> getMovies(Long category_id,String type);
+    List<Movie> getMovies(Long category_id,String type);
 //
 //    Movie updateMovie(Long movie_id, String name, Long category_id, Long user_identification);
 //
